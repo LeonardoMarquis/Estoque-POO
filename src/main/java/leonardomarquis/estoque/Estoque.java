@@ -79,9 +79,10 @@ public class Estoque{
     }
     public ArrayList<Fornecedor> fornecedores(int cod){
         for(Produto produto : produtos){
-            if(produto.getCod() == cod){
+            if(produto.getCod() != cod || produto.getFornecedores() == null){
                 return produto.getFornecedores();
             }
+
         }
 
         return null;

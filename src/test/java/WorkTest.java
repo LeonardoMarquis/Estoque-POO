@@ -62,7 +62,6 @@ public class WorkTest {
     @Test
     public void testeAddFornecedor(){
         e1.incluir(p1);
-        e1.incluir(p2);
         e1.incluir(p3);
         e1.adicionarFornecedor(1, f1);  // o cod e o codigo do produto queo fornecedor fornece
         e1.adicionarFornecedor(3, f2);
@@ -72,5 +71,22 @@ public class WorkTest {
 
         assertNotNull(e1.fornecedores(1));
         assertNotNull(e1.fornecedores(3));
+
+    }
+    @Test
+    public void testeFornecedoresNull(){            // quer saber se tem fornecedor
+        e1.incluir(p3);                             // tem o produto mas nao tem o fornecedor
+
+        System.out.println(e1.fornecedores(3));
+
+        assertNull(e1.fornecedores(3));         //como esta sem fornecedor deve retornar null
+    }
+
+    @Test
+    public void testeFornecedoresNullSemProdutoIncluso(){   // quer saber se tem fornecedor
+                                                        // mas nem tem o produto e nem o fornecedor
+        System.out.println(e1.fornecedores(3));
+
+        assertNull(e1.fornecedores(3));         //como esta sem fornecedor e sem produto deve retornar null
     }
 }
