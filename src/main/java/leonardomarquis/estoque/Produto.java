@@ -59,7 +59,7 @@ public class Produto{
     public void movimentacao(String tipo, int quant, double val){
         Date data = new Date();
         long time = data.getTime();
-        String registro = time + "|" + tipo + "|R$ " + quant + "|Unid:" + val;
+        String registro = time + "; " + tipo + "; qtd:" + quant + "; valor:" + val + "; estoque:" + this.quantidade;
         movimentacoes.add(registro);
     }
 

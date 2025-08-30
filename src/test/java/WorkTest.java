@@ -5,7 +5,7 @@ import leonardomarquis.estoque.Produto;
 import leonardomarquis.estoque.Produto;
 import leonardomarquis.estoque.Fornecedor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 // LEMBRAR DE REMOVER OS IMPORTS E DEIXAR NA MESMA PACKGE, e de colocar o testes na mesma pasta dos outros
@@ -63,6 +63,7 @@ public class WorkTest {
     public void testeAddFornecedor(){
         e1.incluir(p1);
         e1.incluir(p2);
+        e1.incluir(p3);
         e1.adicionarFornecedor(1, f1);  // o cod e o codigo do produto queo fornecedor fornece
         e1.adicionarFornecedor(3, f2);
 

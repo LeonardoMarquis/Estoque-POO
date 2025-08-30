@@ -84,7 +84,7 @@ public class Estoque{
             }
         }
 
-        return new ArrayList<>();
+        return null;
     }
     public ArrayList<Produto> estoqueAbaixoDoMinimo(){
         ArrayList<Produto> comEstoqueAbaixo = new ArrayList<>();
