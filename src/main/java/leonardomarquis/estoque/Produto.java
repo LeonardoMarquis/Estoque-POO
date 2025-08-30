@@ -22,12 +22,12 @@ public class Produto{
 
         this.cod = cod;
         this.desc = desc;
-        this.min = min;     // é o estoque minimo, na hora de incluir o produto no estoque, e como se fosse a primeira compra do produto para o estoque, e um coneito para dizer
+        this.min = min;     // é o estoque minimo, na hora de incluir o produto no estoque, definindo o valor do estoque minimo do produto para o estoque, e so um conceito para dizer, que esta com o estoque no minimo
         this.lucro = lucro; // é em porcentagem mas representa em decimal
 
         this.precoCompra = 0;
         this.precoVenda = 0;
-        this.quantidade = 0;;
+        this.quantidade = 0;
 
         this.movimentacoes = new ArrayList<>();
         this.fornecedores = new ArrayList<>();

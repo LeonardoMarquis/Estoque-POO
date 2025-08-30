@@ -1,6 +1,11 @@
 package leonardomarquis.estoque;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+
+
 
 public class Estoque{
     private ArrayList<Produto> produtos;
@@ -23,7 +28,7 @@ public class Estoque{
 
     public void comprar(int cod, int quant, double preco){  // no caso esse é o comprar para o estoque
         for(Produto produto : produtos){
-            if(produto.getCod() == cod{  // o restante das verificacoes estao no metodo compra do produto
+            if(produto.getCod() == cod){  // o restante das verificacoes estao no metodo compra do produto
                 produto.compra(quant, preco);
                 return;
             }
@@ -50,16 +55,53 @@ public class Estoque{
         return -1;
     }
     public String movimentacao(int cod, Date inicio, Date fim){
+        StringBuilder movimentacoes = new StringBuilder();      // para nao ter que ficar concatenando as movimentacoes com +
+        long inicTime = inicio.getTime();   // vai retornar em milisegundos desde a epoch time que e 01 01 1970
+        long fimTime = fim.getTime();
+        for(Produto produto : produtos){
+            if(produto.getCod() == cod){
+                for(String movimen : produto.getMovimentacoes()){
+                    String[]  each = movimen.split("; ", 2);
+                    long movTime = Long.parseLong(each[0]);         // o each 0 tem o tempo, o each 1 tem o desc da operacao
 
+                    if (movTime >= inicTime && movTime <= fimTime ){    // para pegar no tempo pedido, entre tal tempo e tal
+                        //aqui e para formatar  data em forma correta para mostrar la
+                        Date dt1 = new Date(movTime);
+                        SimpleDateFormat simpdtformat = new SimpleDateFormat("dd/MM/yyyy");
+                        String dt1NewForm = simpdtformat.format(dt1);
+                        movimentacoes.append(dt1NewForm).append("- ").append(each[1]).append("\n");
+                    }
+                }
+
+            }
+        }
+        return movimentacoes.toString();
     }
     public ArrayList<Fornecedor> fornecedores(int cod){
+        for(Produto produto : produtos){
+            if(produto.getCod() == cod){
+                return produto.getFornecedores();
+            }
+        }
 
+        return new ArrayList<>();
     }
     public ArrayList<Produto> estoqueAbaixoDoMinimo(){
-
+        ArrayList<Produto> comEstoqueAbaixo = new ArrayList<>();
+        for(Produto produto : produtos){
+            if(produto.estoqueAbaixoDoMinimo()){
+                comEstoqueAbaixo.add(produto);
+            }
+        }
+        return comEstoqueAbaixo;
     }
     public void adicionarFornecedor(int cod, Fornecedor f){
-
+        for(Produto produto : produtos){
+            if(produto.getCod() == cod){
+                produto.addFornecedores(f);
+                return;
+            }
+        }
     }
     public double precoDeVenda(int cod){
         for(Produto produto : produtos){
