@@ -1,8 +1,7 @@
 package leonardomarquis.estoqueComProdutoPerecivel;
 
-import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.ArrayList;
 
 public class Estoque implements InterfaceEstoque{
     private ArrayList<Produto> produtos;
@@ -12,23 +11,23 @@ public class Estoque implements InterfaceEstoque{
     }
 
 
-    public boolean incluir(Produto p) {
-        if (p.getCod() <= 0 || p.getDesc() == null || p.getDesc().isEmpty() || p.getMin() <= 0) {
+    public boolean incluir(Produto produt) {
+        if (produt.getCod() <= 0 || produt.getDesc() == null || produt.getDesc().isEmpty() || produt.getMin() <= 0) {
             return false;
         }
         for (Produto produto : produtos) {
-            if (produto.getCod() == p.getCod()) {
+            if (produto.getCod() == produt.getCod()) {
                 return false;
             }
         }
-        produtos.add(p);
+        produtos.add(produt);
         return true;
     }
 
     public boolean comprar(int cod, int quant, double preco, Date val) {
         for (Produto produto : produtos) {
             if (produto.getCod() == cod) {
-                if (produto instanceof ProdutoPerecivel && val == null) {
+                if (produto instanceof ProdutoPerecivel && val == null) {   // para ver produto como objeto da classe Produto perecivel, pois pode ser que haja um produto nomrmal aqui, mas isso seri ua erro
                     return false;
                 }
                 produto.compra(quant, preco, val);
