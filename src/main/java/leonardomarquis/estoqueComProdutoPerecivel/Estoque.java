@@ -25,13 +25,26 @@ public class Estoque implements InterfaceEstoque{
     }
 
     public boolean comprar(int cod, int quant, double preco, Date val) {
+        if(quant <= 0 || preco <= 0){   // VERIFICACAO extra para evitar verificar so no produto(elemento ddo array de produtos).compra
+            return false;
+        }
+
         for (Produto produto : produtos) {
             if (produto.getCod() == cod) {
-                if (produto instanceof ProdutoPerecivel && val == null) {   // para ver produto como objeto da classe Produto perecivel, pois pode ser que haja um produto nomrmal aqui, mas isso seri ua erro
-                    return false;
+
+                if (produto instanceof ProdutoPerecivel ) {   // para ver produto como objeto da classe Produto perecivel, pois pode ser que haja um produto nomrmal aqui, mas isso seri ua erro
+                    if (val == null){
+                        return false;
+                    }
+                    produto.compra(quant, preco, val);
+                    return true;
                 }
-                produto.compra(quant, preco, val);
-                return true;
+                else{
+                    produto.compra(quant, preco, null);
+                    return true;
+                }
+
+
             }
         }
         return false;
@@ -98,7 +111,7 @@ public class Estoque implements InterfaceEstoque{
     public void adicionarFornecedor(int cod, Fornecedor f) {
         for (Produto produto : produtos) {
             if (produto.getCod() == cod) {
-                produto.adicionarFornecedor(f);
+                produto.addFornecedor(f);
                 return;
             }
         }

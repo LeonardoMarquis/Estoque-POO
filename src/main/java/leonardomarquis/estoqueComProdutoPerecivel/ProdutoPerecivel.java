@@ -1,30 +1,43 @@
 package leonardomarquis.estoqueComProdutoPerecivel;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class ProdutoPerecivel extends Produto {
+import java.util.Collections;
+import java.util.ArrayList;
+
+public class ProdutoPerecivel extends Produto { // produtoperezivel herda de produto
+
+
     private ArrayList<Lote> lotes;
 
     public ProdutoPerecivel(int cod, String desc, int min, double lucro) {
-        super(cod, desc, min, lucro);
+        super(cod, desc, min, lucro);   // pegar o construrtor do de quem ele herda
         this.lotes = new ArrayList<>();
     }
 
-    public void compra(int quant, double val, Date validade) {
-        super.compra(quant, val, validade);
-        Lote lote = new Lote(quant, validade);
-        lotes.add(lote);
+    public void compra(int quant, double val, Date validade) {  //compra para o estoque!
+        Date hoje = new Date();
+        if(validade.after(hoje)){
+            super.compra(quant, val, validade);
+            Lote lote = new Lote(quant, validade);
+            lotes.add(lote);
+        }
+
     }
 
-    @Override
-    public double vender(int quant) {
-        if (quant <= 0) return -1;
 
-        // Filtra apenas os lotes válidos (não vencidos)
+
+    @Override
+
+
+    public double vender(int quant) {
+        if (quant <= 0){
+            return -1;
+        }
+
+        // para pegar so os lotes nao vencdos
         ArrayList<Lote> lotesValidos = new ArrayList<>();
         Date hoje = new Date();
 
@@ -34,46 +47,48 @@ public class ProdutoPerecivel extends Produto {
             }
         }
 
-        // Verifica se há quantidade suficiente em lotes válidos
+        // saner se tem n de lotes validos suficeinte
         int disponivel = 0;
         for (Lote lote : lotesValidos) {
             disponivel += lote.getQuant();
         }
 
         if (disponivel < quant) {
-            // Se não houver lotes válidos suficientes
-            System.out.println("Não há quantidade suficiente de lotes válidos.");
+
+            System.out.println("Nao ha quantidade suficiente de lotes validos!");
             return -1;
         }
 
-        // Agora podemos vender, pois temos quantidade suficiente nos lotes válidos
+        // tem n suficiente entao da para vender
         int totalVendidos = 0;
         double totalValor = 0.0;
 
-        // Ordenar os lotes válidos pela data de validade (do mais próximo para o mais distante)
+        // aqui e para ordenar os lotes validos pela data de validade (do mais proximo para o mais distante)
         Collections.sort(lotesValidos, Comparator.comparing(Lote::getValidade));
 
-        // Itera sobre os lotes válidos para realizar a venda
+
+
+        // verifica os lotes válidos para realizar a venda
         Iterator<Lote> iterator = lotesValidos.iterator();
         while (iterator.hasNext()) {
             Lote lote = iterator.next();
             int qtdLote = lote.getQuant();
-            int aVender = Math.min(quant - totalVendidos, qtdLote); // Vende o mínimo entre o que falta e a quantidade disponível no lote
-            lote.setQuant(qtdLote - aVender); // Atualiza a quantidade do lote
-            totalVendidos += aVender; // Atualiza a quantidade vendida
-            totalValor += aVender * getPrecoVenda(); // Atualiza o valor total da venda
+            int aVender = Math.min(quant - totalVendidos, qtdLote); // Vende o minimo entre o que falta e a quant disponiv no lote
+            lote.setQuant(qtdLote - aVender); // atualiza a quantidade do  lote
+            totalVendidos += aVender; // atualiza a quant vendida
+            totalValor += aVender * getPrecoVenda(); // atualiza o valor total da venda
 
-            // Se o lote estiver vazio, deve ser removido
+            // se tiver lotevazido remove
             if (lote.getQuant() == 0) {
-                iterator.remove(); // Remove o lote da lista
-                System.out.println("Lote removido, pois ficou sem unidades.");
+                lotes.remove(lote); // Remove o lote da lista
+                System.out.println("O lote foi removido por falta de unidades");
             }
 
             if (totalVendidos == quant) break; // Se já vendeu a quantidade necessária, encerra o loop
         }
 
-        // Adiciona movimentações de venda
-        adicionarMovimentacoes("Venda", totalVendidos, getPrecoVenda());
+        //adcicionar a movkementacao
+        addMovimentacoes("venda", totalVendidos, getPrecoVenda());
         return totalValor;
     }
 

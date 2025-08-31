@@ -1,4 +1,6 @@
 package leonardomarquis.estoqueComProdutoPerecivel;
+
+
 import java.util.Date;
 
 public class Lote {
@@ -10,19 +12,21 @@ public class Lote {
         this.validade = validade;
     }
 
+    public void setQuant(int quant) {
+        this.quant = quant;
+    }
     public int getQuant() {
         return quant;
     }
 
-    public void setQuant(int quant) {
-        this.quant = quant;
-    }
 
-    public Date getValidade() {
-        return validade;
-    }
 
     public void setValidade(Date validade) {
         this.validade = validade;
     }
+    public Date getValidade() {
+        return validade;
+    }
+
+
 }
