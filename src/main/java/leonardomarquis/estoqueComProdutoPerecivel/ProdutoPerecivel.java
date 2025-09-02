@@ -92,6 +92,8 @@ public class ProdutoPerecivel extends Produto { // produtoperezivel herda de pro
         return totalValor;
     }
 
+
+    
     public int quantidadeVencidos() {
         int totalVencidos = 0;
         for (Lote lote : lotes) {

@@ -12,9 +12,14 @@ public class Estoque implements InterfaceEstoque{
 
 
     public boolean incluir(Produto produt) {
-        if (produt.getCodigo() <= 0 || produt.getDescricao() == null || produt.getDescricao().isEmpty() || produt.getMin() <= 0) {
+        if (produt == null){   // verificar se algum parametro e null e bom ser a primeira verificacao
             return false;
         }
+
+        if (produt.getCodigo() <= 0 || produt.getDescricao() == null || produt.getDescricao().isEmpty() || produt.getMin() <= 0 || produt.getLucro() < 0) {
+            return false;
+        }
+
         for (Produto produto : produtos) {
             if (produto.getCodigo() == produt.getCodigo()) {
                 return false;
@@ -24,7 +29,7 @@ public class Estoque implements InterfaceEstoque{
         return true;
     }
 
-    public boolean comprar(int cod, int quant, double preco, Date val) {
+    public boolean comprar(int cod, int quant, double preco, Date val) { // val e a data de validade do produto
         if(quant <= 0 || preco <= 0){   // VERIFICACAO extra para evitar verificar so no produto(elemento ddo array de produtos).compra
             return false;
         }
@@ -32,18 +37,23 @@ public class Estoque implements InterfaceEstoque{
         for (Produto produto : produtos) {
             if (produto.getCodigo() == cod) {
 
-                if (produto instanceof ProdutoPerecivel ) {   // para ver produto como objeto da classe Produto perecivel, pois pode ser que haja um produto nomrmal aqui, mas isso seri ua erro
+                if (produto instanceof ProdutoPerecivel ) {   // para ver produto como objeto da classe Produto perecivel, se for normal ai para o else if
                     if (val == null){
+                        System.out.println("Produto perecivel deve ter validade!");
                         return false;
                     }
                     produto.compra(quant, preco, val);
                     return true;
                 }
-                else{
+                else if (val == null){  // se nao for produto perecivel e receber val( data de validade) = null
                     produto.compra(quant, preco, null);
                     return true;
                 }
-
+                else {
+                    System.out.println("Para Produto nao perecivel deve colocar validade = null!");
+                    return false;
+                }
+                // seguindo o requisitado: no caso de ser um produto normal, deve dar para comprar certinho so se der a data null para ele
 
             }
         }
@@ -54,17 +64,19 @@ public class Estoque implements InterfaceEstoque{
         if (quant <= 0) {
             return -1;
         }
-        for (Produto produto : produtos) {
-            if (produto.getCodigo() == cod && produto instanceof ProdutoPerecivel) {
-                return ((ProdutoPerecivel) produto).vender(quant);
-            }
-            else { // Adicionar após o if para ProdutoPerecivel
-                if (produto.getQuantidade() >= quant) {
-                    double valor = quant * produto.getPrecoVenda();
-                    produto.setQuantidade(produto.getQuantidade() - quant);
-                    return valor;
+        for (Produto produto : produtos) {  // a verificacao de lote so ocorre dentro do vender do produto perecivel
+            if (produto.getCodigo() == cod ) {
+                if (produto instanceof ProdutoPerecivel){
+                    return ((ProdutoPerecivel) produto).vender(quant);
                 }
-                return -1;
+                else { // Adicionar após o if para ProdutoPerecivel
+                    if (produto.getQuantidade() >= quant) {
+                        double valor = quant * produto.getPrecoVenda();
+                        produto.setQuantidade(produto.getQuantidade() - quant);
+                        return valor;
+                    }
+                    return -1;
+                }
             }
         }
         return -1;

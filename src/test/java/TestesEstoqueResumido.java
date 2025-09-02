@@ -333,7 +333,7 @@ public class TestesEstoqueResumido {
 		estoque.comprar(prod2.getCodigo(), 5, 2.5, data);
 		data.setTime(data.getTime() - 120000);
 		assertEquals(-1, estoque.vender(14, 3), 0);
-		assertEquals(-1, estoque.vender(15, 3), 0);
+        assertEquals(-1, estoque.vender(15, 3), 0);
 	}
 	
 	// ------------------------------Estoque abaixo do minimo----------------------------------------
