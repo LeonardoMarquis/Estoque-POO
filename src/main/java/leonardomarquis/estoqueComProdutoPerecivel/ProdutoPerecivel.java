@@ -87,17 +87,24 @@ public class ProdutoPerecivel extends Produto { // produtoperezivel herda de pro
             if (totalVendidos == quant) break; // Se já vendeu a quantidade necessária, encerra o loop
         }
 
+        // mudar quantidade no produto(perecivel no caso)
+        int novaQuanti = 0;
+        for (Lote lote : lotes){
+            novaQuanti += lote.getQuant();
+        }
+        setQuantidade(novaQuanti);
+
         //adcicionar a movkementacao
         addMovimentacoes("venda", totalVendidos, getPrecoVenda());
         return totalValor;
     }
 
 
-    
+
     public int quantidadeVencidos() {
         int totalVencidos = 0;
-        for (Lote lote : lotes) {
-            if (lote.getValidade() != null && lote.getValidade().before(new Date())) {
+        for (Lote lote : lotes) {       // de acordo com o requisitado: se a validade e hoje, esta vencido >:(   logo se a data e menor ou igaul a de hoje, esta vencido
+            if (lote.getValidade() != null && (lote.getValidade().getTime() <= (new Date()).getTime() )) {
                 totalVencidos += lote.getQuant();
             }
         }

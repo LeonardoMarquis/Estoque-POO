@@ -38,8 +38,9 @@ public class Estoque implements InterfaceEstoque{
             if (produto.getCodigo() == cod) {
 
                 if (produto instanceof ProdutoPerecivel ) {   // para ver produto como objeto da classe Produto perecivel, se for normal ai para o else if
-                    if (val == null){
-                        System.out.println("Produto perecivel deve ter validade!");
+                    Date date_today = new Date();
+                    if (val == null || val.getTime() < date_today.getTime()){
+                        System.out.println("Produto perecivel deve ter validade e que seja de hoje em diante!");
                         return false;
                     }
                     produto.compra(quant, preco, val);
