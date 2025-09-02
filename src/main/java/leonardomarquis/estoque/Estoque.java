@@ -77,16 +77,17 @@ public class Estoque{
         }
         return movimentacoes.toString();
     }
+
     public ArrayList<Fornecedor> fornecedores(int cod){
         for(Produto produto : produtos){
-            if(produto.getCod() != cod || produto.getFornecedores() == null){
-                return produto.getFornecedores();
+            if(produto.getCod() == cod){
+                return produto.getFornecedores().isEmpty() ? null : produto.getFornecedores();
             }
-
         }
-
         return null;
     }
+
+
     public ArrayList<Produto> estoqueAbaixoDoMinimo(){
         ArrayList<Produto> comEstoqueAbaixo = new ArrayList<>();
         for(Produto produto : produtos){
