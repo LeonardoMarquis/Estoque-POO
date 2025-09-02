@@ -12,11 +12,11 @@ public class Estoque implements InterfaceEstoque{
 
 
     public boolean incluir(Produto produt) {
-        if (produt.getCod() <= 0 || produt.getDesc() == null || produt.getDesc().isEmpty() || produt.getMin() <= 0) {
+        if (produt.getCodigo() <= 0 || produt.getDescricao() == null || produt.getDescricao().isEmpty() || produt.getMin() <= 0) {
             return false;
         }
         for (Produto produto : produtos) {
-            if (produto.getCod() == produt.getCod()) {
+            if (produto.getCodigo() == produt.getCodigo()) {
                 return false;
             }
         }
@@ -30,7 +30,7 @@ public class Estoque implements InterfaceEstoque{
         }
 
         for (Produto produto : produtos) {
-            if (produto.getCod() == cod) {
+            if (produto.getCodigo() == cod) {
 
                 if (produto instanceof ProdutoPerecivel ) {   // para ver produto como objeto da classe Produto perecivel, pois pode ser que haja um produto nomrmal aqui, mas isso seri ua erro
                     if (val == null){
@@ -55,7 +55,7 @@ public class Estoque implements InterfaceEstoque{
             return -1;
         }
         for (Produto produto : produtos) {
-            if (produto.getCod() == cod && produto instanceof ProdutoPerecivel) {
+            if (produto.getCodigo() == cod && produto instanceof ProdutoPerecivel) {
                 return ((ProdutoPerecivel) produto).vender(quant);
             }
             else { // Adicionar após o if para ProdutoPerecivel
@@ -72,7 +72,7 @@ public class Estoque implements InterfaceEstoque{
 
     public Produto pesquisar(int cod) {
         for (Produto produto : produtos) {
-            if (produto.getCod() == cod) {
+            if (produto.getCodigo() == cod) {
                 return produto;
             }
         }
@@ -101,7 +101,7 @@ public class Estoque implements InterfaceEstoque{
 
     public int quantidadeVencidos(int cod) {
         for (Produto produto : produtos) {
-            if (produto.getCod() == cod && produto instanceof ProdutoPerecivel) {
+            if (produto.getCodigo() == cod && produto instanceof ProdutoPerecivel) {
                 return ((ProdutoPerecivel) produto).quantidadeVencidos();
             }
         }
@@ -110,7 +110,7 @@ public class Estoque implements InterfaceEstoque{
 
     public void adicionarFornecedor(int cod, Fornecedor f) {
         for (Produto produto : produtos) {
-            if (produto.getCod() == cod) {
+            if (produto.getCodigo() == cod) {
                 produto.addFornecedor(f);
                 return;
             }
@@ -119,7 +119,7 @@ public class Estoque implements InterfaceEstoque{
 
     public double precoDeVenda(int cod) {
         for (Produto produto : produtos) {
-            if (produto.getCod() == cod) {
+            if (produto.getCodigo() == cod) {
                 return produto.getPrecoVenda();
             }
         }
@@ -128,12 +128,25 @@ public class Estoque implements InterfaceEstoque{
 
     public double precoDeCompra(int cod) {
         for (Produto produto : produtos) {
-            if (produto.getCod() == cod) {
+            if (produto.getCodigo() == cod) {
                 return produto.getPrecoCompra();
             }
         }
         return -1;
     }
+
+
+
+    public int quantidade(int cod) {
+        for (Produto produto : produtos){
+            if (produto.getCodigo() == cod){
+                return produto.getQuantidade();
+            }
+        }
+        return -1;
+    }
+
+
 
 
 }
