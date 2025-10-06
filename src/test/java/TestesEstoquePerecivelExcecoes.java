@@ -1,8 +1,8 @@
 //package leonardomarquis.estoqueComProdutoPerecivel;
 
-import leonardomarquis.estoqueComProdutoPerecivel.Estoque;
-import leonardomarquis.estoqueComProdutoPerecivel.Produto;
-import leonardomarquis.estoqueComProdutoPerecivel.ProdutoPerecivel;
+import leonardomarquis.estoqueComProdutoPerecivelExcecoes.Estoque;
+import leonardomarquis.estoqueComProdutoPerecivelExcecoes.Produto;
+import leonardomarquis.estoqueComProdutoPerecivelExcecoes.ProdutoPerecivel;
 import org.junit.Test;
 
 import java.util.ArrayList;
