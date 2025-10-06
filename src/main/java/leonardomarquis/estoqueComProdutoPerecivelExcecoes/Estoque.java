@@ -62,35 +62,36 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
 
     }
 
-    public double vender(int cod, int quant) {
+    public double vender(int cod, int quant) throws ProdutoInexistente, ProdutoVencido, DadosInvalidos{
         if (quant <= 0) {
-            return -1;
+            throw new DadosInvalidos("Quantidade inválida");
         }
         for (Produto produto : produtos) {  // a verificacao de lote so ocorre dentro do vender do produto perecivel
             if (produto.getCodigo() == cod ) {
                 if (produto instanceof ProdutoPerecivel){
                     return ((ProdutoPerecivel) produto).vender(quant);
                 }
-                else { // Adicionar após o if para ProdutoPerecivel
+                else { // Adicionar após o if para ProdutoPerecivel, aqui é se nao for perecivel
                     if (produto.getQuantidade() >= quant) {
                         double valor = quant * produto.getPrecoVenda();
                         produto.setQuantidade(produto.getQuantidade() - quant);
                         return valor;
                     }
-                    return -1;
+                    throw new ProdutoInexistente("Quantidade de Produtos insuficiente");
                 }
             }
         }
-        return -1;
+        throw new ProdutoVencido("Produto com lotes vencidos!");
+        // A LINHA 55 DE PRODUTO PERECIVEL NOS LEVA PARA essa throw acima
     }
 
-    public Produto pesquisar(int cod) {
+    public Produto pesquisar(int cod) throws ProdutoInexistente{
         for (Produto produto : produtos) {
             if (produto.getCodigo() == cod) {
                 return produto;
             }
         }
-        return null;
+        throw new ProdutoInexistente();
     }
 
     public ArrayList<Produto> estoqueAbaixoDoMinimo() {
@@ -113,13 +114,13 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
         return vencidos;
     }
 
-    public int quantidadeVencidos(int cod) {
+    public int quantidadeVencidos(int cod) throws ProdutoInexistente{
         for (Produto produto : produtos) {
             if (produto.getCodigo() == cod && produto instanceof ProdutoPerecivel) {
                 return ((ProdutoPerecivel) produto).quantidadeVencidos();
             }
         }
-        return 0;
+        throw new ProdutoInexistente("Produto com lotes vencidos!");
     }
 
     public void adicionarFornecedor(int cod, Fornecedor f) {
@@ -131,33 +132,33 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
         }
     }
 
-    public double precoDeVenda(int cod) {
+    public double precoDeVenda(int cod) throws ProdutoInexistente{
         for (Produto produto : produtos) {
             if (produto.getCodigo() == cod) {
                 return produto.getPrecoVenda();
             }
         }
-        return -1;
+        throw new ProdutoInexistente();
     }
 
-    public double precoDeCompra(int cod) {
+    public double precoDeCompra(int cod) throws ProdutoInexistente{
         for (Produto produto : produtos) {
             if (produto.getCodigo() == cod) {
                 return produto.getPrecoCompra();
             }
         }
-        return -1;
+        throw new ProdutoInexistente();
     }
 
 
 
-    public int quantidade(int cod) {
+    public int quantidade(int cod) throws ProdutoInexistente{
         for (Produto produto : produtos){
             if (produto.getCodigo() == cod){
                 return produto.getQuantidade();
             }
         }
-        return -1;
+        throw new ProdutoInexistente("Produto com lotes vencidos!");
     }
 
 

@@ -41,6 +41,7 @@ public class ProdutoPerecivel extends Produto { // produtoperezivel herda de pro
                 lotesValidos.add(lote);
             }
         }
+        // se o lote estiver na validade ele vai para os lotes vendiveis
 
         // saner se tem n de lotes validos suficeinte
         int disponivel = 0;
@@ -51,7 +52,11 @@ public class ProdutoPerecivel extends Produto { // produtoperezivel herda de pro
         if (disponivel < quant) {
 
             System.out.println("Nao ha quantidade suficiente de lotes validos!");
-            return -1;
+            return -1;      // da esse return, para a funcao de vender do estoque,
+                            // no caso ocorre isso aqui quando nao tem lotes validos para vender
+                            // ou seja, os lotes que tem estao vencidos
+                            // entao posso dizer que quando voltar la, é porque os LOTES ESTAO VENCIDOS
+                            // e ai DA THROW NA EXCECAO DE LOTES VENCIDOS!!
         }
 
         // tem n suficiente entao da para vender
