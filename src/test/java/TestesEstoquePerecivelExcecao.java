@@ -1,6 +1,10 @@
 //package leonardomarquis.estoqueComProdutoPerecivel;
 
-import leonardomarquis.estoqueComProdutoPerecivelExcecoes.*;
+// esse é o meu que eu criei o que professor enviou é o EstoqueComExcecoesTestResumido
+// como ele enviou o dele depois, e eu ja tinha feito esse, vou juntar as coisas desse no
+// de que ele enviou
+
+import leonardomarquis.estoqueComProdutoPerecivelExcecao.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -11,7 +15,7 @@ import static org.junit.Assert.*;
 // LEMBRAR DE COLOCAR DE VOLTA NA PACKAGE E REMOVER OS IMPORTS
 
 
-public class TestesEstoquePerecivelExcecoes {
+public class TestesEstoquePerecivelExcecao {
 
     // ------------------------------Pesquisar -> Produto e Produto Perecivel----------------------------------------
     @Test

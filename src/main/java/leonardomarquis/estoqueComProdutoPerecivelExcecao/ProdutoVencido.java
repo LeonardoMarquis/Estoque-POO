@@ -1,4 +1,4 @@
-package leonardomarquis.estoqueComProdutoPerecivelExcecoes;
+package leonardomarquis.estoqueComProdutoPerecivelExcecao;
 
 public class ProdutoVencido extends Exception{
     public ProdutoVencido(){

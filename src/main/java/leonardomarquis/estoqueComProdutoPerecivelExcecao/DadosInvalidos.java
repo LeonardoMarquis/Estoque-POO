@@ -1,4 +1,4 @@
-package leonardomarquis.estoqueComProdutoPerecivelExcecoes;
+package leonardomarquis.estoqueComProdutoPerecivelExcecao;
 
 public class DadosInvalidos extends Exception{
     public DadosInvalidos(){

@@ -1,4 +1,4 @@
-package leonardomarquis.estoqueComProdutoPerecivelExcecoes;
+package leonardomarquis.estoqueComProdutoPerecivelExcecao;
 
 
 import java.util.Date;

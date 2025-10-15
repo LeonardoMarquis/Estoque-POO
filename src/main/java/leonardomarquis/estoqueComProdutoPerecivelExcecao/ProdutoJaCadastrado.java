@@ -1,4 +1,4 @@
-package leonardomarquis.estoqueComProdutoPerecivelExcecoes;
+package leonardomarquis.estoqueComProdutoPerecivelExcecao;
 
 public class ProdutoJaCadastrado extends Exception{
     public ProdutoJaCadastrado(){

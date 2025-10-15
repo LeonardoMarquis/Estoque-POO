@@ -1,15 +1,12 @@
 //package leonardomarquis.estoque;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
-import java.util.Date;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import leonardomarquis.estoque.*;
 //remover imports e colocar o path e colocar os coisas do professor
 
