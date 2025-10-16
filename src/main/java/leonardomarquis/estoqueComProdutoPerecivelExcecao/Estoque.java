@@ -10,14 +10,16 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
         this.produtos = new ArrayList<>();
     }
 
-    // no logar de um if else, posso colocar um try catch
+    // no logar de um if else, posso colocar um try catch, é uma opcao
     // e no lugar de um return false pode ser um throw new excecao tal() e como no construtor dela tem como colocar mensagem especifica, posso colocar
     public void incluir(Produto produt) throws DadosInvalidos, ProdutoJaCadastrado {
         if (produt == null){   // verificar se algum parametro e null e bom ser a primeira verificacao
             throw new DadosInvalidos("Produto nulo inserido");
         }
 
-        if (produt.getCodigo() <= 0 || produt.getDescricao() == null || produt.getDescricao().isEmpty() || produt.getMin() <= 0 || produt.getLucro() < 0) {
+        // aceita null, vazio ou só espaços -> invalido
+        String descricao = produt.getDescricao();
+        if (produt.getCodigo() <= 0 || descricao == null || descricao.trim().isEmpty() || produt.getMin() <= 0 || produt.getLucro() < 0) {
             throw new DadosInvalidos("Dados do produto inválidos");
         }
 
@@ -40,31 +42,30 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
 
                 if (produto instanceof ProdutoPerecivel) {   // para ver produto como objeto da classe Produto perecivel, se for normal ai para o else if
                     Date date_today = new Date();
+                    // se validade nula ou passado -> excecao
                     if (val == null || val.getTime() < date_today.getTime()){
-
                         throw new ProdutoNaoPerecivel("Produto perecivel deve ter validade e que seja de hoje em diante!");
                     }
+                    // chamo compra do produto perecivel (ele mesmo fará controle mais estrito: só aceita validade.after(hoje))
                     produto.compra(quant, preco, val);
-                    return;     // para quebrar o loop
+                    return; // já processou a compra
                 }
                 else if (val == null){  // se nao for produto perecivel e receber val( data de validade) = null
                     produto.compra(quant, preco, null);
                     return;
-                    // nao é para retornar excecao quando ocorre um caso que nao é erro, nao precisa
+                    //throw new ProdutoNaoPerecivel();
                 }
                 else {
-                    throw new DadosInvalidos("Para Produto nao perecivel deve colocar validade = null!");
+                    // se passou data para produto nao-perecivel -> lançar ProdutoNaoPerecivel (os testes esperam isso)
+                    throw new ProdutoNaoPerecivel("Para Produto nao perecivel deve colocar validade = null!");
                 }
                 // seguindo o requisitado: no caso de ser um produto normal, deve dar para comprar certinho so se der a data null para ele
 
             }
-            else{
-                throw new ProdutoInexistente();
-            }
-
         }
 
-
+        // se não achou o produto
+        throw new ProdutoInexistente("Produto inexistente para compra: codigo " + cod);
     }
 
     public double vender(int cod, int quant) throws ProdutoInexistente, ProdutoVencido, DadosInvalidos{
@@ -74,7 +75,14 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
         for (Produto produto : produtos) {  // a verificacao de lote so ocorre dentro do vender do produto perecivel
             if (produto.getCodigo() == cod ) {
                 if (produto instanceof ProdutoPerecivel){
-                    return ((ProdutoPerecivel) produto).vender(quant);
+                    // o ProdutoPerecivel.vender é que pode retornar -1 se lotes vencidos ou insuficientes
+                    // faco essa verificacao nele la
+                    double resultado = ((ProdutoPerecivel) produto).vender(quant);
+                    if (resultado == -1) {
+                        // Quando o produto perecivel não conseguiu vender por lotes vencidos/insuficientes
+                        throw new ProdutoVencido("Produto com lotes vencidos ou sem lotes validos!");
+                    }
+                    return resultado;
                 }
                 else { // Adicionar após o if para ProdutoPerecivel, aqui é se nao for perecivel
                     if (produto.getQuantidade() >= quant) {
@@ -82,14 +90,13 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
                         produto.setQuantidade(produto.getQuantidade() - quant);
                         return valor;
                     }
-                    throw new DadosInvalidos("Quantidade de Produtos insuficiente");
+                    // quantidade maior que estoque -> considerar como DadosInvalidos (testes esperam isso em alguns casos)
+                    throw new DadosInvalidos("Quantidade maior que estoque");
                 }
             }
-            else{
-                throw new ProdutoInexistente();
-            }
         }
-        throw new ProdutoVencido("Produto com lotes vencidos!");
+        // produto não encontrado
+        throw new ProdutoInexistente("Produto inexistente para venda: codigo " + cod);
         // A LINHA 55 DE PRODUTO PERECIVEL NOS LEVA PARA essa throw acima
     }
 
@@ -166,11 +173,7 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
                 return produto.getQuantidade();
             }
         }
-        throw new ProdutoInexistente("Produto com lotes vencidos!");
+        throw new ProdutoInexistente("Produto inexistente!");
     }
 
-
-
-
 }
-
