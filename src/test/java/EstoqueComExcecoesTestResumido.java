@@ -41,7 +41,7 @@ public class EstoqueComExcecoesTestResumido {
             estoque.incluir(prod1);
             fail("Deveria ter dado erro de dados invalidos");
         } catch (DadosInvalidos e) {
-            // TODO: handle exception
+            // TODO: handle exception ! o que fazer se essa excecao acontecer
         }
         try {
             estoque.incluir(prod2);
@@ -273,7 +273,7 @@ public class EstoqueComExcecoesTestResumido {
             estoque.vender(12, 30);
             fail("Nao deveria ter vendido quant maior que estoque");
         } catch (DadosInvalidos e) {
-            // TODO: handle exception
+            // TODO: handle exception, o que fazer se essa excecao acontecer
         }
         assertEquals(20, estoque.quantidade(12));
     }

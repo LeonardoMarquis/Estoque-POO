@@ -45,11 +45,12 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
                         throw new ProdutoNaoPerecivel("Produto perecivel deve ter validade e que seja de hoje em diante!");
                     }
                     produto.compra(quant, preco, val);
-
+                    return;     // para quebrar o loop
                 }
                 else if (val == null){  // se nao for produto perecivel e receber val( data de validade) = null
                     produto.compra(quant, preco, null);
-                    throw new ProdutoNaoPerecivel();
+                    return;
+                    // nao é para retornar excecao quando ocorre um caso que nao é erro, nao precisa
                 }
                 else {
                     throw new DadosInvalidos("Para Produto nao perecivel deve colocar validade = null!");
@@ -57,6 +58,10 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
                 // seguindo o requisitado: no caso de ser um produto normal, deve dar para comprar certinho so se der a data null para ele
 
             }
+            else{
+                throw new ProdutoInexistente();
+            }
+
         }
 
 
@@ -77,8 +82,11 @@ public class Estoque implements InterfaceEstoqueComExcecoes {
                         produto.setQuantidade(produto.getQuantidade() - quant);
                         return valor;
                     }
-                    throw new ProdutoInexistente("Quantidade de Produtos insuficiente");
+                    throw new DadosInvalidos("Quantidade de Produtos insuficiente");
                 }
+            }
+            else{
+                throw new ProdutoInexistente();
             }
         }
         throw new ProdutoVencido("Produto com lotes vencidos!");
